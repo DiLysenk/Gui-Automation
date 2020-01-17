@@ -15,7 +15,7 @@ files = os.listdir(directory)
 print(files)
 
 
-#search screen position, coordinates x and y, screen_button == screen element
+"""Поиск координат верхнего левого угла кнопки"""
 
 def search_screen_position(path_screen_button):
     time.sleep(0.1)
@@ -33,7 +33,7 @@ def search_screen_position(path_screen_button):
     # поиск скриншота
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
 
-    loc = numpy.where(res >= 0.95)                  # разобрать как работает,
+    loc = numpy.where(res >= 0.94)                  # разобрать как работает,
 
     for pt in zip(*loc[::-1]):                      # loc = это строка или срез чегото
         x = int(pt[0])
@@ -49,13 +49,13 @@ def search_screen_position(path_screen_button):
 
 
 for i in range(len(files)):
-    # вывод Шага
+    # вывод Шага с названием файла перед его нахождением
     print("step " + str(i + 1) + ': ' + files[i])
 
     if files[i].find('!') != -1:
         # поиск индекса параметра паузы
         index_sleep_time = files[i].find('!') + 1
-        # определение паузы и превращение строки в целое число
+        # определение паузы и превращение строки в лое число
         sleep_time = int(files[i][index_sleep_time: index_sleep_time + 2])
         # установка паузы
         time.sleep(1.1 + sleep_time)
@@ -71,8 +71,11 @@ for i in range(len(files)):
         time.sleep(5)
         x, y = search_screen_position(files[i])
 
-    # Клик по кнопке
-    pyautogui.leftClick(x + 10, y + 10)
+    # Клик по кнопке,  если в файле указан параметр r то клик происходит ПКМ
+    if files[i].find('r') != -1:
+        pyautogui.rightClick(x + 10, y + 10)
+    else:
+        pyautogui.leftClick(x + 10, y + 10)
     time.sleep(0.3)
 
 
