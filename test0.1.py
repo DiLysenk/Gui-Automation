@@ -12,14 +12,14 @@ directory = './buttons'
 '''  Получим список файлов который будем использовать. 
 В переменной files содержится список с названиями '''
 files = os.listdir(directory)
-files.sort()
 print(files)
 
 
-#search screen position, coordinates x and y, t == screen element
-def search_screen_position(t):
+#search screen position, coordinates x and y, screen_button == screen element
+
+def search_screen_position(path_screen_button):
     time.sleep(0.1)
-    template = cv2.imread(t, 0)
+    template = cv2.imread(path_screen_button, 0)
     w, h = template.shape[::-1]
     # инвертируем
     # Скрин Объекта на котором находим объект
@@ -33,9 +33,9 @@ def search_screen_position(t):
     # поиск скриншота
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
 
-    loc = numpy.where(res >= 0.95)  # разобрать как работает,
+    loc = numpy.where(res >= 0.95)                  # разобрать как работает,
 
-    for pt in zip(*loc[::-1]): # loc = это строка или срез чегото
+    for pt in zip(*loc[::-1]):                      # loc = это строка или срез чегото
         x = int(pt[0])
         y = int(pt[1])
 
@@ -43,17 +43,39 @@ def search_screen_position(t):
     find_screen.save('3.png')
     return x, y
 
-''' Цикл с шагами
-в search_screen_position подставляются аргменты из списка files (files[i])
-файлы находятся в папке buttons
-'''
-for i in range(len(files)):
 
-    print(str(i) + " step " + files[i])         # вывод Шага
-    files[i] = "buttons/" + files[i]            #
+' Цикл с шагами в search_screen_position подставляются аргменты из списка ' \
+'files (files[i]) файлы находятся в папке buttons '
+
+
+for i in range(len(files)):
+    # вывод Шага
+    print("step " + str(i + 1) + ': ' + files[i])
+
+    if files[i].find('!') != -1:
+        # поиск индекса параметра паузы
+        index_sleep_time = files[i].find('!') + 1
+        # определение паузы и превращение строки в целое число
+        sleep_time = int(files[i][index_sleep_time: index_sleep_time + 2])
+        # установка паузы
+        time.sleep(1.1 + sleep_time)
+
+    # конкатенация имени папки с именем файла что бы получился путь
+    files[i] = "buttons/" + files[i]
     time.sleep(0.1)
-    x, y = search_screen_position(files[i])
-    pyautogui.leftClick(x + x/2, y + y/2)
+
+# Поиск координат левого верхнего угла картинки
+    try:
+        x, y = search_screen_position(files[i])
+    except:
+        time.sleep(5)
+        x, y = search_screen_position(files[i])
+
+    # Клик по кнопке
+    pyautogui.leftClick(x + 10, y + 10)
+    time.sleep(0.3)
+
+
 
 
 
