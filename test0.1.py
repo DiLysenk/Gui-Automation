@@ -18,9 +18,11 @@ print(files)
 """Поиск координат верхнего левого угла кнопки"""
 
 def search_screen_position(path_screen_button):
-    time.sleep(0.1)
+
+    # объявляет искомый объект
     template = cv2.imread(path_screen_button, 0)
     w, h = template.shape[::-1]
+
     # инвертируем
     # Скрин Объекта на котором находим объект
     base_screen = ImageGrab.grab(bbox=(0, 0, 1920, 1080))
@@ -44,7 +46,7 @@ def search_screen_position(path_screen_button):
     return x, y
 
 
-' Цикл с шагами в search_screen_position подставляются аргменты из списка ' \
+' Цикл с шагами в search_screen_position подставляются аргменты из списка '
 'files (files[i]) файлы находятся в папке buttons '
 
 
@@ -58,7 +60,7 @@ for i in range(len(files)):
         # определение паузы и превращение строки в лое число
         sleep_time = int(files[i][index_sleep_time: index_sleep_time + 2])
         # установка паузы
-        time.sleep(1.1 + sleep_time)
+        time.sleep(1.1 * sleep_time)
 
     # конкатенация имени папки с именем файла что бы получился путь
     files[i] = "buttons/" + files[i]
@@ -68,15 +70,19 @@ for i in range(len(files)):
     try:
         x, y = search_screen_position(files[i])
     except:
-        time.sleep(5)
+        time.sleep(5)                                # не изменять, так задуманно
         x, y = search_screen_position(files[i])
 
     # Клик по кнопке,  если в файле указан параметр r то клик происходит ПКМ
     if files[i].find('r') != -1:
         pyautogui.rightClick(x + 10, y + 10)
+    elif files[i].find('dd') != -1:
+        pyautogui.leftClick(x + 10, y + 10)
+        pyautogui.leftClick(x + 10, y + 10)
     else:
         pyautogui.leftClick(x + 10, y + 10)
-    time.sleep(0.3)
+
+    time.sleep(0.1)
 
 
 
