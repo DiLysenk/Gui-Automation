@@ -70,11 +70,11 @@ for i in range(len(files)):
     try:
         x, y = search_screen_position(files[i])
     except:
-        time.sleep(5)                                # не изменять, так задуманно
+        time.sleep(10)                                # не изменять, так задуманно
         x, y = search_screen_position(files[i])
 
     # Клик по кнопке,  если в файле указан параметр r то клик происходит ПКМ
-    if files[i].find('r') != -1:
+    if files[i].find('rr') != -1:
         pyautogui.rightClick(x + 10, y + 10)
     elif files[i].find('dd') != -1:
         pyautogui.leftClick(x + 10, y + 10)
