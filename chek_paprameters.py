@@ -1,12 +1,17 @@
 
-def check_parametars(name_screen_file):
-    name_file = [str(i) for i in name_screen_file]
-    name_file.index('_')
+
+files = ('123!99')
+# поиск индекса параметра паузы
+index_sleep_time = files.find('!') + 1
+# определение паузы и превращение строки в integer
+sleep_time = int(files[index_sleep_time: index_sleep_time + 2])
+# установка паузы
+print(sleep_time + 10)
 
 
 
 
-    print(name_file)
 
 
-check_parametars('0019_3')
+
+
