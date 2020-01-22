@@ -5,7 +5,6 @@ import pyautogui
 from PIL import ImageGrab
 import os
 
-
 '''Объявляем каталог из которого будем брать картинки'''
 directory = './buttons'
 
@@ -14,11 +13,10 @@ directory = './buttons'
 files = os.listdir(directory)
 print(files)
 
-
 """Поиск координат верхнего левого угла кнопки"""
 
-def search_screen_position(path_screen_button):
 
+def search_screen_position(path_screen_button):
     # объявляет искомый объект
     template = cv2.imread(path_screen_button, 0)
     w, h = template.shape[::-1]
@@ -35,24 +33,28 @@ def search_screen_position(path_screen_button):
     # поиск скриншота
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
 
-    loc = numpy.where(res >= 0.94)                  # разобрать как работает,
+    loc = numpy.where(res >= 0.94)  # разобрать как работает,
 
-    for pt in zip(*loc[::-1]):                      # loc = это строка или срез чегото
+    for pt in zip(*loc[::-1]):  # loc = это строка или срез чегото
         x = int(pt[0])
         y = int(pt[1])
 
     find_screen = ImageGrab.grab(bbox=(x, y, x + w, y + h))
+
     find_screen.save('3.png')
+
     return x, y
 
 
 ' Цикл с шагами в search_screen_position подставляются аргменты из списка '
-'files (files[i]) файлы находятся в папке buttons '
+'files(files[i]) файлы находятся в папке buttons '
 
+# цикл работает с файлами, ищет совпадения и инициализирует действие
 
 for i in range(len(files)):
+
     # вывод Шага с названием файла перед его нахождением
-    print("step " + str(i + 1) + ': ' + files[i])
+    print("step " + str(i) + ': ' + files[i])
 
     if files[i].find('!') != -1:
         # поиск индекса параметра паузы
@@ -66,11 +68,11 @@ for i in range(len(files)):
     files[i] = "buttons/" + files[i]
     time.sleep(0.1)
 
-# Поиск координат левого верхнего угла картинки
+    # Поиск координат левого верхнего угла картинки
     try:
         x, y = search_screen_position(files[i])
     except:
-        time.sleep(10)                                # не изменять, так задуманно
+        time.sleep(10)  # не изменять, так задуманно
         x, y = search_screen_position(files[i])
 
     # Клик по кнопке,  если в файле указан параметр то клик происходит ПКМ
@@ -83,9 +85,3 @@ for i in range(len(files)):
         pyautogui.leftClick(x + 10, y + 10)
 
     time.sleep(0.1)
-
-
-
-
-
-
