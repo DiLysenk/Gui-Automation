@@ -4,14 +4,22 @@ import numpy
 import pyautogui
 from PIL import ImageGrab
 import os
+import sys
+
+
 
 '''Объявляем каталог из которого будем брать картинки'''
-directory = './buttons'
+directory = './buttons_bla'
 
 '''  Получим список файлов который будем использовать. 
 В переменной files содержится список с названиями '''
 files = os.listdir(directory)
-print(files)
+
+"""добавление параметра в командной строке, если нет нечего то step = 0, если строка больше 1 то считывается"""
+if len(sys.argv) > 1:
+    step = int(sys.argv[1])
+else:
+    step = 0
 
 """Поиск координат верхнего левого угла кнопки"""
 
@@ -47,11 +55,11 @@ def search_screen_position(path_screen_button):
 
 
 ' Цикл с шагами в search_screen_position подставляются аргменты из списка '
-'files(files[i]) файлы находятся в папке buttons '
+'files(files[i]) файлы находятся в папке buttons_bla '
 
 # цикл работает с файлами, ищет совпадения и инициализирует действие
 
-for i in range(len(files)):
+for i in range(step, len(files)):
 
     # вывод Шага с названием файла перед его нахождением
     print("step " + str(i) + ': ' + files[i])
@@ -59,13 +67,13 @@ for i in range(len(files)):
     if files[i].find('!') != -1:
         # поиск индекса параметра паузы
         index_sleep_time = files[i].find('!') + 1
-        # определение паузы и превращение строки в лое число
+        # определение паузы и после символа "!"
         sleep_time = int(files[i][index_sleep_time: index_sleep_time + 2])
         # установка паузы
         time.sleep(1.1 * sleep_time)
 
     # конкатенация имени папки с именем файла что бы получился путь
-    files[i] = "buttons/" + files[i]
+    files[i] = "buttons_bla/" + files[i]
     time.sleep(0.1)
 
     # Поиск координат левого верхнего угла картинки
