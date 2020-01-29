@@ -17,9 +17,15 @@ files = os.listdir(directory)
 
 """добавление параметра в командной строке, если нет нечего то step = 0, если строка больше 1 то считывается"""
 if len(sys.argv) > 1:
-    step = int(sys.argv[1])
+    step = int(sys.argv[1])      #step - начало списка искомых объектов
 else:
     step = 0
+
+"""добавление параметра в командной строке, если нет нечего то end = 0, если строка больше 1 то считывается"""
+if len(sys.argv) > 1:
+    end_script = int(sys.argv[2])   #end - конец списка искомых объектов
+else:
+    end_script = len(files)
 
 """Поиск координат верхнего левого угла кнопки"""
 
@@ -59,7 +65,7 @@ def search_screen_position(path_screen_button):
 
 # цикл работает с файлами, ищет совпадения и инициализирует действие
 
-for i in range(step, len(files)):
+for i in range(step, end_script):
 
     # вывод Шага с названием файла перед его нахождением
     print("step " + str(i) + ': ' + files[i])
