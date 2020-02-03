@@ -18,3 +18,5 @@ if len(sys.argv) > 1:
 else:
     step = 0
 print(step + 9)
+
+print('hello, world!')
