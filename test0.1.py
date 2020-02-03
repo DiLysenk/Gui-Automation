@@ -53,9 +53,9 @@ def search_screen_position(path_screen_button):
         x = int(pt[0])
         y = int(pt[1])
 
-    find_screen = ImageGrab.grab(bbox=(x, y, x + w, y + h))
+    find_screen = ImageGrab.grab(bbox=(x, y, x + w, y + h)) 
 
-    find_screen.save('3.png')
+    find_screen.save('3.png') # сохраняет последнюю искомую картинку в PNG
 
     return x, y
 
@@ -68,7 +68,7 @@ def search_screen_position(path_screen_button):
 for i in range(step, end_script):
 
     # вывод Шага с названием файла перед его нахождением
-    print("step " + str(i) + ': ' + files[i])
+    print(("step " + "{}" + ': ' + files[i]).format(i))
 
     if files[i].find('!') != -1:
         # поиск индекса параметра паузы
