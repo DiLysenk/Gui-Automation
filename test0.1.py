@@ -2,14 +2,15 @@ import cv2
 import time
 import numpy
 import pyautogui
-from PIL import ImageGrab
+from PIL import Image
+import pyscreenshot
 import os
 import sys
 
 
 
 '''Объявляем каталог из которого будем брать картинки'''
-directory = './buttons_bla'
+directory = './channel_epg'
 
 '''  Получим список файлов который будем использовать. 
 В переменной files содержится список с названиями '''
@@ -37,7 +38,7 @@ def search_screen_position(path_screen_button):
 
     # инвертируем
     # Скрин Объекта на котором находим объект
-    base_screen = ImageGrab.grab(bbox=(0, 0, 1920, 1080))
+    base_screen = pyscreenshot.grab(bbox=(0, 0, 1920, 1080))
     base_screen.save('1.png')
 
     # преобразование в cv2 формат
@@ -53,15 +54,14 @@ def search_screen_position(path_screen_button):
         x = int(pt[0])
         y = int(pt[1])
 
-    find_screen = ImageGrab.grab(bbox=(x, y, x + w, y + h)) 
+    find_screen = pyscreenshot.grab(bbox=(x, y, x + w, y + h))
 
     find_screen.save('3.png') # сохраняет последнюю искомую картинку в PNG
 
     return x, y
 
-
-' Цикл с шагами в search_screen_position подставляются аргменты из списка '
-'files(files[i]) файлы находятся в папке buttons_bla '
+"""Цикл с шагами в search_screen_position подставляются аргменты из списка
+files(files[i]) файлы находятся в папке buttons_bla"""
 
 # цикл работает с файлами, ищет совпадения и инициализирует действие
 
@@ -79,8 +79,8 @@ for i in range(step, end_script):
         time.sleep(1.1 * sleep_time)
 
     # конкатенация имени папки с именем файла что бы получился путь
-    files[i] = "buttons_bla/" + files[i]
-    time.sleep(0.1)
+    files[i] = "channel_epg/" + files[i]
+    time.sleep(1)
 
     # Поиск координат левого верхнего угла картинки
     try:
@@ -98,4 +98,4 @@ for i in range(step, end_script):
     else:
         pyautogui.leftClick(x + 10, y + 10)
 
-    time.sleep(0.1)
+    time.sleep(1)
